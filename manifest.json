@@ -17,6 +17,9 @@
       "48": "icons/icon48.png"
     }
   },
+  "background": {
+    "service_worker": "src/background.js"
+  },
   "permissions": ["tabs"],
   "host_permissions": [
     "*://github.com/*",
