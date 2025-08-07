@@ -25,28 +25,28 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 function convertToDeepWiki(url) {
-    if (url.includes('github.com')) {
-    return url.replace('github.com', 'deepwiki.com');
-  } else if (url.includes('github1s.com')) {
-    return url.replace('github1s.com', 'deepwiki.com');
+  const urlObj = new URL(url);
+  if (urlObj.hostname.includes('github.com') || urlObj.hostname.includes('github1s.com')) {
+    const pathParts = urlObj.pathname.split('/').slice(1, 3); // 获取owner/repo部分
+    return `https://deepwiki.com/${pathParts.join('/')}`;
   }
   return url;
 }
 
 function convertToGitHub1s(url) {
-  if (url.includes('github.com')) {
-    return url.replace('github.com', 'github1s.com');
-  } else if (url.includes('deepwiki.com')) {
-    return url.replace('deepwiki.com', 'github1s.com');
+  const urlObj = new URL(url);
+  if (urlObj.hostname.includes('github.com') || urlObj.hostname.includes('deepwiki.com')) {
+    const pathParts = urlObj.pathname.split('/').slice(1, 3); // 获取owner/repo部分
+    return `https://github1s.com/${pathParts.join('/')}`;
   }
   return url;
 }
 
 function convertToGitHub(url) {
-  if (url.includes('github1s.com')) {
-    return url.replace('github1s.com', 'github.com');
-  } else if (url.includes('deepwiki.com')) {
-    return url.replace('deepwiki.com', 'github.com');
+  const urlObj = new URL(url);
+  if (urlObj.hostname.includes('github1s.com') || urlObj.hostname.includes('deepwiki.com')) {
+    const pathParts = urlObj.pathname.split('/').slice(1, 3); // 获取owner/repo部分
+    return `https://github.com/${pathParts.join('/')}`;
   }
   return url;
 }
