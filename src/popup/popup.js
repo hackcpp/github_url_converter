@@ -42,6 +42,7 @@ document.getElementById('deepwiki-btn').addEventListener('click', () => {
         showStatus('转换失败: ' + (response?.error || chrome.runtime.lastError?.message), true);
       } else {
         showStatus('正在跳转到DeepWiki...');
+        window.close();
       }
     });
   });
@@ -57,6 +58,7 @@ document.getElementById('github1s-btn').addEventListener('click', () => {
         showStatus('转换失败: ' + (response?.error || chrome.runtime.lastError?.message), true);
       } else {
         showStatus('正在跳转到GitHub1s...');
+        window.close();
       }
     });
   });
@@ -72,6 +74,7 @@ document.getElementById('github-btn').addEventListener('click', () => {
         showStatus('转换失败: ' + (response?.error || chrome.runtime.lastError?.message), true);
       } else {
         showStatus('正在跳转到GitHub...');
+        window.close();
       }
     });
   });
