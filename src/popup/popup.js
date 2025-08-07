@@ -5,6 +5,33 @@ function showStatus(message, isError = false) {
   setTimeout(() => status.textContent = '', 3000);
 }
 
+function disableButton(buttonId) {
+  const button = document.getElementById(buttonId);
+  button.disabled = true;
+  button.style.opacity = '0.5';
+  button.style.cursor = 'not-allowed';
+}
+
+// 页面加载时检查当前URL并禁用相应按钮
+chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+  const url = tabs[0]?.url;
+  if (!url) return;
+
+  const hostname = new URL(url).hostname;
+  if (hostname === 'github.com') {
+    disableButton('github-btn');
+  } else if (hostname.includes('github1s.com')) {
+    disableButton('github1s-btn');
+  } else if (hostname.includes('deepwiki.com')) {
+    disableButton('deepwiki-btn');
+  } else {
+    // 其他页面禁用所有按钮
+    disableButton('github-btn');
+    disableButton('github1s-btn');
+    disableButton('deepwiki-btn');
+  }
+});
+
 document.getElementById('deepwiki-btn').addEventListener('click', () => {
   chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
     chrome.runtime.sendMessage({
