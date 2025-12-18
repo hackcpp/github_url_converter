@@ -1,5 +1,41 @@
 console.log('Background service worker loaded');
 
+// 监听全局快捷键命令
+chrome.commands.onCommand.addListener((command) => {
+  console.log('Command received:', command);
+  
+  // 获取当前活动标签页
+  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+    if (tabs.length === 0) return;
+    
+    const currentTab = tabs[0];
+    const url = currentTab.url;
+    
+    try {
+      let newUrl;
+      switch (command) {
+        case 'convert-to-deepwiki':
+          newUrl = convertToDeepWiki(url);
+          break;
+        case 'convert-to-github1s':
+          newUrl = convertToGitHub1s(url);
+          break;
+        case 'convert-to-github':
+          newUrl = convertToGitHub(url);
+          break;
+        default:
+          return;
+      }
+      
+      if (newUrl !== url) {
+        chrome.tabs.update(currentTab.id, { url: newUrl });
+      }
+    } catch (error) {
+      console.error('URL conversion failed:', error);
+    }
+  });
+});
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Received message:', request);
   try {

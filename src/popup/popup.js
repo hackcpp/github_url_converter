@@ -79,3 +79,51 @@ document.getElementById('github-btn').addEventListener('click', () => {
     });
   });
 });
+
+// 添加键盘快捷键支持
+document.addEventListener('keydown', (event) => {
+  // 防止在输入框中触发快捷键
+  if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+    return;
+  }
+
+  const key = event.key.toLowerCase();
+  
+  // 检查按钮是否被禁用
+  function isButtonDisabled(buttonId) {
+    const button = document.getElementById(buttonId);
+    return button.disabled;
+  }
+
+  // 触发按钮点击
+  function triggerButtonClick(buttonId) {
+    if (!isButtonDisabled(buttonId)) {
+      document.getElementById(buttonId).click();
+    }
+  }
+
+  switch (key) {
+    case 'd':
+      event.preventDefault();
+      triggerButtonClick('deepwiki-btn');
+      break;
+    case '1':
+      event.preventDefault();
+      triggerButtonClick('github1s-btn');
+      break;
+    case 'g':
+      event.preventDefault();
+      triggerButtonClick('github-btn');
+      break;
+    case 'escape':
+      event.preventDefault();
+      window.close();
+      break;
+  }
+});
+
+// 页面加载时聚焦到body，确保键盘事件能被捕获
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.focus();
+  document.body.setAttribute('tabindex', '-1');
+});

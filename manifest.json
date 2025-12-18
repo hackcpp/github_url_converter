@@ -25,5 +25,28 @@
     "*://github.com/*",
     "*://github1s.com/*",
     "*://deepwiki.com/*"
-  ]
+  ],
+  "commands": {
+    "convert-to-deepwiki": {
+      "suggested_key": {
+        "default": "Alt+Shift+D",
+        "mac": "Alt+Shift+D"
+      },
+      "description": "切换到DeepWiki"
+    },
+    "convert-to-github1s": {
+      "suggested_key": {
+        "default": "Alt+Shift+1",
+        "mac": "Alt+Shift+1"
+      },
+      "description": "切换到GitHub1s"
+    },
+    "convert-to-github": {
+      "suggested_key": {
+        "default": "Alt+Shift+G",
+        "mac": "Alt+Shift+G"
+      },
+      "description": "返回GitHub"
+    }
+  }
 }
