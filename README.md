@@ -7,51 +7,98 @@
 
 ## 转换规则
 
-### 1. GitHub → DeepWiki
-**转换规则：**
-- 将 `https://github.com/owner/repo` 转换为 `https://deepwiki.com/owner/repo`
-- 将 `https://github.com/owner/repo/tree/branch` 转换为 `https://deepwiki.com/owner/repo/tree/branch`
-- 将 `https://github.com/owner/repo/blob/branch/path/to/file` 转换为 `https://deepwiki.com/owner/repo/blob/branch/path/to/file`
+**重要说明：** 根据代码实现，本扩展的转换规则是**简化版本**，只保留最基本的仓库信息。
 
-**示例：**
+### 转换逻辑
+
+代码中的转换函数使用以下逻辑：
+```javascript
+const pathParts = urlObj.pathname.split('/').slice(1, 3); // 获取owner/repo部分
+return `https://目标域名.com/${pathParts.join('/')}`;
+```
+
+这意味着：
+1. **只提取路径的前两个部分**（owner和repo名称）
+2. **丢弃所有其他信息**：分支、文件路径、查询参数等
+3. **只支持基本的仓库页面转换**
+
+### 实际转换示例
+
+#### 1. GitHub → DeepWiki
+**转换规则：** 只保留 `owner/repo`，丢弃其他所有信息
+
+**实际转换：**
 - `https://github.com/facebook/react` → `https://deepwiki.com/facebook/react`
-- `https://github.com/facebook/react/tree/main` → `https://deepwiki.com/facebook/react/tree/main`
-- `https://github.com/facebook/react/blob/main/README.md` → `https://deepwiki.com/facebook/react/blob/main/README.md`
+- `https://github.com/facebook/react/tree/main` → `https://deepwiki.com/facebook/react` ❌ (分支信息丢失)
+- `https://github.com/facebook/react/blob/main/README.md` → `https://deepwiki.com/facebook/react` ❌ (文件信息丢失)
+- `https://github.com/facebook/react/issues/123` → `https://deepwiki.com/facebook/react` ❌ (页面类型丢失)
 
-### 2. GitHub → GitHub1s
-**转换规则：**
-- 将 `https://github.com/owner/repo` 转换为 `https://github1s.com/owner/repo`
-- 将 `https://github.com/owner/repo/tree/branch` 转换为 `https://github1s.com/owner/repo/tree/branch`
-- 将 `https://github.com/owner/repo/blob/branch/path/to/file` 转换为 `https://github1s.com/owner/repo/blob/branch/path/to/file`
+#### 2. GitHub → GitHub1s
+**转换规则：** 只保留 `owner/repo`，丢弃其他所有信息
 
-**示例：**
+**实际转换：**
 - `https://github.com/facebook/react` → `https://github1s.com/facebook/react`
-- `https://github.com/facebook/react/tree/main` → `https://github1s.com/facebook/react/tree/main`
-- `https://github.com/facebook/react/blob/main/README.md` → `https://github1s.com/facebook/react/blob/main/README.md`
+- `https://github.com/facebook/react/tree/main` → `https://github1s.com/facebook/react` ❌ (分支信息丢失)
+- `https://github.com/facebook/react/blob/main/README.md` → `https://github1s.com/facebook/react` ❌ (文件信息丢失)
 
-### 3. DeepWiki → GitHub
-**转换规则：**
-- 将 `https://deepwiki.com/owner/repo` 转换为 `https://github.com/owner/repo`
-- 将 `https://deepwiki.com/owner/repo/tree/branch` 转换为 `https://github.com/owner/repo/tree/branch`
-- 将 `https://deepwiki.com/owner/repo/blob/branch/path/to/file` 转换为 `https://github.com/owner/repo/blob/branch/path/to/file`
+#### 3. DeepWiki → GitHub
+**转换规则：** 只保留 `owner/repo`，丢弃其他所有信息
 
-### 4. DeepWiki → GitHub1s
-**转换规则：**
-- 将 `https://deepwiki.com/owner/repo` 转换为 `https://github1s.com/owner/repo`
-- 将 `https://deepwiki.com/owner/repo/tree/branch` 转换为 `https://github1s.com/owner/repo/tree/branch`
-- 将 `https://deepwiki.com/owner/repo/blob/branch/path/to/file` 转换为 `https://github1s.com/owner/repo/blob/branch/path/to/file`
+**实际转换：**
+- `https://deepwiki.com/facebook/react` → `https://github.com/facebook/react`
+- `https://deepwiki.com/facebook/react/tree/main` → `https://github.com/facebook/react` ❌ (分支信息丢失)
 
-### 5. GitHub1s → GitHub
-**转换规则：**
-- 将 `https://github1s.com/owner/repo` 转换为 `https://github.com/owner/repo`
-- 将 `https://github1s.com/owner/repo/tree/branch` 转换为 `https://github.com/owner/repo/tree/branch`
-- 将 `https://github1s.com/owner/repo/blob/branch/path/to/file` 转换为 `https://github.com/owner/repo/blob/branch/path/to/file`
+#### 4. DeepWiki → GitHub1s
+**转换规则：** 只保留 `owner/repo`，丢弃其他所有信息
 
-### 6. GitHub1s → DeepWiki
-**转换规则：**
-- 将 `https://github1s.com/owner/repo` 转换为 `https://deepwiki.com/owner/repo`
-- 将 `https://github1s.com/owner/repo/tree/branch` 转换为 `https://deepwiki.com/owner/repo/tree/branch`
-- 将 `https://github1s.com/owner/repo/blob/branch/path/to/file` 转换为 `https://deepwiki.com/owner/repo/blob/branch/path/to/file`
+**实际转换：**
+- `https://deepwiki.com/facebook/react` → `https://github1s.com/facebook/react`
+- `https://deepwiki.com/facebook/react/tree/main` → `https://github1s.com/facebook/react` ❌ (分支信息丢失)
+
+#### 5. GitHub1s → GitHub
+**转换规则：** 只保留 `owner/repo`，丢弃其他所有信息
+
+**实际转换：**
+- `https://github1s.com/facebook/react` → `https://github.com/facebook/react`
+- `https://github1s.com/facebook/react/tree/main` → `https://github.com/facebook/react` ❌ (分支信息丢失)
+
+#### 6. GitHub1s → DeepWiki
+**转换规则：** 只保留 `owner/repo`，丢弃其他所有信息
+
+**实际转换：**
+- `https://github1s.com/facebook/react` → `https://deepwiki.com/facebook/react`
+- `https://github1s.com/facebook/react/tree/main` → `https://deepwiki.com/facebook/react` ❌ (分支信息丢失)
+
+### 限制说明
+
+1. **不支持分支保留**：所有包含分支信息的URL都会被简化为基本仓库页面
+2. **不支持文件路径**：文件、目录等详细路径信息会被丢弃
+3. **不支持特殊页面**：Issues、Pull Requests、Actions等页面都会被转换为基本仓库页面
+4. **只适用于仓库主页转换**：最适合从GitHub仓库主页快速切换到其他平台
+
+### 适用场景
+
+- 从GitHub仓库主页快速切换到DeepWiki或GitHub1s
+- 从DeepWiki或GitHub1s快速返回GitHub仓库主页
+- 不需要保留具体分支、文件或页面类型信息的场景
+
+### 技术实现
+
+```javascript
+function convertToDeepWiki(url) {
+  const urlObj = new URL(url);
+  if (urlObj.hostname.includes('github.com') || urlObj.hostname.includes('github1s.com')) {
+    const pathParts = urlObj.pathname.split('/').slice(1, 3); // 只取前两个路径段
+    return `https://deepwiki.com/${pathParts.join('/')}`;
+  }
+  return url;
+}
+```
+
+**关键点：**
+- `split('/').slice(1, 3)` - 只取路径的第2和第3个部分（索引1和2）
+- 丢弃路径的其余部分和所有查询参数
+- 这是一个**简化版**的转换，专注于基本的仓库页面跳转
 
 ## 技术实现
 
